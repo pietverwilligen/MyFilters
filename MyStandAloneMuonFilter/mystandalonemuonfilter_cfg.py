@@ -32,8 +32,11 @@ process.Out = cms.OutputModule("PoolOutputModule",
 )
 
 process.filter = cms.EDFilter('MyStandAloneMuonFilter',
-    Debug = cms.untracked.bool(False),
+    Debug = cms.untracked.bool(True),
+    StandAloneMuonInTracker = cms.untracked.bool(True),
+    StandAloneMuonInMuonSystem = cms.untracked.bool(True),
     StandAloneTrackCollectionLabel = cms.InputTag("standAloneMuons","UpdatedAtVtx"),
+    MuonCollectionLabel = cms.InputTag("standAloneMuons","UpdatedAtVtx"),
     EtaMin = cms.untracked.double(1.7),
     EtaMax = cms.untracked.double(2.5),
     MinContrHits = cms.untracked.int32(0),
