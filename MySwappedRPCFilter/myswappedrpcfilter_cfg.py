@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 process = cms.Process("Filter")
 process.load("FWCore.MessageService.MessageLogger_cfi")
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 process.load('Configuration.Geometry.GeometryExtended2015Reco_cff')
 process.load('Configuration.Geometry.GeometryExtended2015_cff')
 # process.load('Configuration.StandardSequences.MagneticField_38T_PostLS1_cff')                                                                                                                                                                               
@@ -34,6 +34,11 @@ fileName = cms.untracked.string ("MyFilteredEvents_234542_Swap_W-2S04RB3.root")
 )
 process.filter = cms.EDFilter('MySwappedRPCFilter',
 Debug                         = cms.untracked.bool(True),
+SelectRPChit                  = cms.untracked.bool(False),
+SelectMuon                    = cms.untracked.bool(False),
+SelectSegment                 = cms.untracked.bool(True),
+SelectOR                      = cms.untracked.bool(True),  # (RPC || Muon) or (RPC || Segment)
+SelectAND                     = cms.untracked.bool(False), # (RPC && Muon) or (RPC && Segment)
 # STAMuonTrackCollectionLabel = cms.InputTag("standAloneMuons",""),         # UpdatedAtVtx                                                                                                                                                                   # RootFileName                = cms.untracked.string("MyFilteredHistograms_234542_Swap_W-2S04RB3.root")   
 # EtaRange_Min                = cms.untracked.double(+99999.0),
 # EtaRange_Max                = cms.untracked.double(-99999.0),
