@@ -70,8 +70,8 @@ class MyStandAloneMuonFilter : public edm::EDFilter {
       //virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&) override;
 
       // ----------member data ---------------------------
-  edm::InputTag STAMuLabel;
-  bool selectevent, debug;
+  edm::InputTag TrkLabel, MuoLabel;
+  bool selectevent, debug, STAMuinTrk, STAMuinMuo;
   double etamin, etamax;
   int mincontrhits, maxcontrhits;
   int eventskept, eventsprocessed;
@@ -92,7 +92,10 @@ MyStandAloneMuonFilter::MyStandAloneMuonFilter(const edm::ParameterSet& iConfig)
 {
    //now do what ever initialization is needed
   debug      = iConfig.getUntrackedParameter<bool>("Debug");
-  STAMuLabel = iConfig.getParameter<edm::InputTag>("StandAloneTrackCollectionLabel");
+  STAMuinTrk = iConfig.getUntrackedParameter<bool>("StandAloneMuonInTracker");
+  STAMuinMuo = iConfig.getUntrackedParameter<bool>("StandAloneMuonInMuonSystem");
+  TrkLabel   = iConfig.getParameter<edm::InputTag>("StandAloneTrackCollectionLabel");
+  MuoLabel   = iConfig.getParameter<edm::InputTag>("MuonCollectionLabel");
   etamin     = iConfig.getUntrackedParameter<double>("EtaMin");
   etamax     = iConfig.getUntrackedParameter<double>("EtaMax");
   mincontrhits = iConfig.getUntrackedParameter<int>("MinContrHits");
@@ -128,7 +131,7 @@ MyStandAloneMuonFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
   selectevent = 0;
   
   edm::Handle<reco::TrackCollection> staTracks;
-  iEvent.getByLabel(STAMuLabel, staTracks);
+  iEvent.getByLabel(TrkLabel, staTracks);
   
   edm::ESHandle<MagneticField> theMGField;
   iSetup.get<IdealMagneticFieldRecord>().get(theMGField);
